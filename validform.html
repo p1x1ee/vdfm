@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crossroads</title>
+<style>
+
+
+
+
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-color: #021012;
+    font-family: sans-serif;
+}
+
+.formContainer{
+    width: 80%;
+    height: 85vh;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color:white; /* For browsers that do not support gradients */
+  background-image: linear-gradient(to right,#ff99ff,#ff99cc,#ff9999);
+
+}
+header{
+    text-align: center;
+    margin: 2rem 0;
+    font-weight: 600;
+}
+
+#myForm{
+    width: 90%;
+    margin: 1rem auto;
+}
+
+.formDetails{
+    margin: 1rem 0;
+}
+
+label{
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: .4rem;
+}
+
+input{
+    width: 100%;
+    padding: .6rem 0;
+    outline: none;
+    font-size: 1rem;
+}
+
+input:focus{
+    outline: 1px solid #064247;
+}
+button{
+    margin: 1.1rem 0;
+    background-color:hotpink;
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    padding: .8rem 0;
+    width: 100%;
+}
+.errorMessage{
+    margin-top: .3rem;
+    font-size: .9rem;
+    font-weight: 600;
+    font-family: monospace;
+}
+.formDetails.success input {
+    border-color: #09c372;
+    outline: none;
+  }
+
+  .formDetails.error input {
+    border-color: #f2070e;
+  }
+
+@media screen and (min-width: 1024px) {
+    .formContainer{
+        width: 30%;
+    }
+}
+</style>
+
+
+
+
+</head>
+<body>
+    <div class="formContainer">
+        <header>
+            <h1>Sign In</h1>
+        </header>
+
+        <form id="myForm">
+            <div class="formDetails">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+                <div class="errorMessage"></div>
+            </div>
+            
+            <div class="formDetails">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+                <div class="errorMessage"></div>
+            </div>
+            
+            <div class="formDetails">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password">
+                <div class="errorMessage"></div>
+            </div>
+    
+            <div class="formDetails">
+                <label for="confirmpassword">Confirm Password:</label>
+                <input type="password" id="confirmPassword" name="confirmpassword">
+                <div class="errorMessage"></div>
+            </div>
+            
+            <button id="button" type="submit">Submit</button>
+          </form>
+    </div>
+
+
+
+
+
+
+<script>
+
+const myForm = document.getElementById('myForm');
+myForm.addEventListener('submit', (event) => {
+    event.preventDefault(); // prevent form submission
+
+//Validate for name
+    const name = myForm.elements.name.value.trim();
+    const nameError = document.querySelector('#name + .errorMessage');
+    const nameInput = document.getElementById('name');
+    if (name === '') {
+      nameError.textContent = 'Name is required.';
+      nameInput.parentNode.classList.add('error');
+      nameInput.parentNode.classList.remove('success');
+    } else {
+      nameError.textContent = '';
+      nameInput.parentNode.classList.add('success');
+      nameInput.parentNode.classList.remove('error');
+    }
+
+//Validate for email
+    const email = myForm.elements.email.value.trim();
+    const emailError = document.querySelector('#email + .errorMessage');
+    const emailInput = document.getElementById('email');
+    if (email === '') {
+      emailError.textContent = 'Email is required.';
+      emailInput.parentNode.classList.add('error');
+      emailInput.parentNode.classList.remove('success');
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      emailError.textContent = 'Please enter a valid email address.';
+      emailInput.parentNode.classList.add('error');
+      emailInput.parentNode.classList.remove('success');
+    } else {
+      emailError.textContent = '';
+      emailInput.parentNode.classList.add('success');
+      emailInput.parentNode.classList.remove('error');
+    }
+
+//Validate password
+    const password = myForm.elements.password.value.trim();
+    const passwordError = document.querySelector('#password + .errorMessage');
+    const passwordInput = document.getElementById('password');
+    if (password === '') {
+      passwordError.textContent = 'Password is required.';
+      passwordInput.parentNode.classList.add('error');
+      passwordInput.parentNode.classList.remove('success');
+    } else if (password.length < 8) {
+      passwordError.textContent = 'Password is expected to be 8 characters.';
+      passwordInput.parentNode.classList.add('error');
+      passwordInput.parentNode.classList.remove('success');
+    } else {
+      passwordError.textContent = '';
+      passwordInput.parentNode.classList.add('success');
+      passwordInput.parentNode.classList.remove('error');
+    }
+
+//Validate confirm password
+    const confirmPassword = myForm.elements.confirmpassword.value.trim();
+    const confirmPasswordError = document.querySelector('#confirmPassword + .errorMessage');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    if (confirmPassword === '') {
+      confirmPasswordError.textContent = 'Confirm Password is required.';
+      confirmPasswordInput.parentNode.classList.add('error');
+      confirmPasswordInput.parentNode.classList.remove('success');
+    } else if (confirmPassword !== password) {
+      confirmPasswordError.textContent = 'Passwords do not match.';
+      confirmPasswordInput.parentNode.classList.add('error');
+      confirmPasswordInput.parentNode.classList.remove('success');
+    } else {
+      confirmPasswordError.textContent = '';
+      confirmPasswordInput.parentNode.classList.add('success');
+      confirmPasswordInput.parentNode.classList.remove('error');
+    }
+
+//Submit the form if there are no errors
+    if (nameError.textContent === '' && emailError.textContent === '' && passwordError.textContent === '' && confirmPasswordError.textContent === '') {
+      myForm.submit();
+      alert("hii.. :"+name);
+
+
+
+
+
+     document.write ("YOUR RESPONSE IS RECORDED")
+    }
+
+
+
+  });
+
+  </script>
+  </body></html>
